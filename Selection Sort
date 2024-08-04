@@ -1,0 +1,45 @@
+#include <stdio.h>
+
+void main() 
+{
+    int n,i,j,min,temp,a[100];
+
+    // Prompt user to enter the number of elements
+    printf("Enter the limit: ");
+    scanf("%d", &n);
+
+    // Prompt user to enter array elements
+    printf("Enter %d elements:\n", n);
+    for(i = 0; i < n; i++)
+    {
+        scanf("%d", &a[i]);
+    }
+
+    // Selection sort algorithm
+    for(i = 0; i < n - 1; i++)
+    {
+        min = i;
+        for(j = i + 1; j < n; j++)
+        {
+            if(a[j] < a[min])
+            {
+                min = j;
+            }
+        }
+        if(min != i)
+        {
+            temp = a[i];
+            a[i] = a[min];
+            a[min] = temp;
+        }
+    }
+
+    // Print the sorted array
+    printf("Sorted array:\n");
+    for(i = 0; i < n; i++)
+    {
+        printf("%d ", a[i]);
+    }
+    printf("\n");
+
+}
