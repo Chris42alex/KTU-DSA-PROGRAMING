@@ -1,76 +1,118 @@
-#include<stdio.h>
-int n;
-int queue[15];
-int front =-1;
-int rear=-1;
-void enqueue(int x)
-{
-if(rear==n-1)
-	printf("\nOverflow\n");
-else if(front==-1 && rear==-1)
-{
-	front=rear=0;
-	queue[rear]=x;
-}
-else
-{
-	rear++;
-	queue[rear]=x;
-}
-}
-void dequeue()
-{
- if(front==-1 && rear==-1)
- 	printf("\nUnderflow\n");
- else if(front==rear)
- 	front=rear=-1;
- else
- {
- printf("%d is removed from the queue ",queue[front]);
- 	front++;
- }
-}
+
+#include <stdio.h>
+#include<stdlib.h>
+int MAX;
+int queue[100];
+int rear = - 1;
+int front = - 1;
 void display()
 {
- if(front==-1 && rear==-1)
- 	printf("the queue is empty ");
- else 
+ int i;
+ if (front == - 1)
+ printf("Queue is empty \n");
+ else
  {
-for(int i=front;i<(rear+1);i++)
+ printf("Queue is : \n");
+ for (i = front; i <= rear; i++)
+ printf("%d ", queue[i]);
+ printf("\n");
+ }
+} 
+void insert()
+{
+ int item;
+ if (rear==MAX-1)
+ printf("Queue Overflow \n");
+ else
  {
-	printf("%d\n",queue[i]);
+ if (front == - 1)
+ 
+ { front = 0;}
+ printf("Inset the element in queue : ");
+ scanf("%d", &item);
+ rear = rear + 1;
+ queue[rear] = item;
  }
+ display();
+} 
+void delete()
+{
+ if (front == - 1 || front > rear)
+ {
+ printf("Queue empty\n");
  }
+ else
+ {
+ printf("Element deleted from queue is : %d\n", queue[front]);
+ front = front + 1;
+ }
+} 
+void search(int element)
+{
+     int i,flag=0;
+     for(i=front;i<=rear;i++){
+         if(queue[i]==element)
+         {
+             flag=1;
+             printf("Found the element %d at index %d",element,i);
+         }
+     }
+     if (flag==0)
+        printf("Element not Found");
+}
+void sum()
+{   
+    int i,count=0,total=0;
+    if(front!=-1)
+    {
+        for(i=front;i<=rear;i++)
+        {
+            count++;
+            total=total+queue[i];
+        }
+    }
+    printf("Count of element : %d",count);
+     printf("/n");
+    printf("Sum of element : %d",total);
+    printf("/n");
 }
 void main()
 {
-	int c=0,s;
-	printf("Enter the size of the queue");
-	scanf("%d",&n);
-	while(c!=4)
-	{
-	printf("\nChoose the operation you need to perform\n");
-	printf("1.Enqueue\n");
-	printf("2.Dequeue\n");	
-	printf("3.Display\n");	
-	scanf("\n%d",&c);
-
-	switch(c)
-	{
-		case 1:
-			printf("\nEnter the number\n");
-			scanf("%d",& s);
-			enqueue(s);
-			break;
-		case 2:	
-			dequeue();
-			break;
-		case 3:
-			display();
-			break;
-		default:
-			printf("Invalid Function");
-			break;
-	}
-	}
-}
+int choice;
+printf("\n Enter the maximum size of array\n");
+scanf("%d",&MAX);
+ while (1)
+ {
+ printf("1.Insert element to queue \n");
+ printf("2.Delete element from queue \n");
+ printf("3.Display all elements of queue \n");
+ printf("4.SEARCH THE ELEMENT \n");
+ printf("5.ADD THE ELEMENTS IN THE QUEUE \n");
+ printf("6.Quit \n");
+ printf("Enter your choice : ");
+ scanf("%d", &choice);
+ switch (choice)
+ {
+ case 1:
+ insert();
+ break;
+ case 2:
+ delete();
+ break;
+ case 3:
+ display();
+ break;
+ case 4:
+ int x;
+ printf("Enter the element to be searched");
+ scanf("%d",&x);
+ search(x);
+ case 5:
+ sum();
+ break;
+ exit(0);
+ default:
+ printf("Invalid choice please retry !!!!!!! \n");
+ } 
+ }
+} 
