@@ -1,0 +1,84 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+// Define a node structure for the stack
+struct node {
+    int data;
+    struct node *link;
+};
+
+struct node *top = NULL; // Initially the stack is empty
+
+void push(int item);
+void pop();
+void display();
+
+void main() {
+    int opt, item;
+    while(1) {
+
+        printf("\nEnter the option to be performed:\n");
+        printf("1. Push the element\n");
+        printf("2. Pop the element\n");
+        printf("3. Display the elements\n");
+        printf("4. Exit\n");
+        printf("Enter your choice: ");
+        scanf("%d", &opt);
+
+        switch(opt) {
+            case 1:
+                printf("Enter the new data: ");
+                scanf("%d", &item);
+                push(item); 
+                break;
+            case 2:
+                pop(); 
+                break;
+            case 3:
+                display(); 
+                break;
+            case 4:
+                exit(0); 
+            default:
+                printf("Invalid choice. Please try again.\n");
+        }
+    }
+}
+
+void push(int item) {
+    struct node *new_node;
+    new_node = (struct node *)malloc(sizeof(struct node));
+    new_node->data = item;
+    new_node->link = top; // Link the new node to the current top
+    top = new_node; // Update top to point to the new node
+    printf("Element pushed: %d\n", item);
+    display(); 
+}
+
+void pop() {
+    struct node *temp;
+    if (top == NULL) { // Check if the stack is empty
+        printf("Stack is empty, cannot pop.\n");
+    } else {
+        temp = top; // Store the current top
+        printf("Element popped: %d\n", top->data); // Print the popped element
+        top = top->link; // Move top to the next element
+        free(temp); // Free the memory of the popped node
+    }
+    display(); 
+}
+
+void display() {
+    struct node *ptr;
+    if (top == NULL) { 
+        printf("Stack is empty...\n");
+    } else {
+        ptr = top;
+        printf("Stack elements are: ");
+        while (ptr != NULL) {
+            printf("%d ", ptr->data); // Print the element
+            ptr = ptr->link; // Move to the next element
+        }
+        printf("\n");
+    }
+}
