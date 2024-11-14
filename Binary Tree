@@ -1,0 +1,90 @@
+#include <stdio.h>
+
+void build(int a[], int i, int item)
+{
+    int ch;
+    int val;
+    a[i] = item;
+    printf("\nDo you want to create left child for %d (1/0): ", item);
+    scanf("%d", &ch);
+    if(ch == 1)
+    {
+        printf("\nEnter left child: ");
+        scanf("%d", &val);
+        build(a, 2 * i, val);  // Left child index is 2 * i
+    }
+
+    printf("\nDo you want to create right child for %d (1/0): ", item);
+    scanf("%d", &ch);
+    if(ch == 1)
+    {
+        printf("\nEnter right child: ");
+        scanf("%d", &val);
+        build(a, 2 * i + 1, val);  // Right child index is 2 * i + 1
+    }
+}
+
+// In-order traversal: Left, Root, Right
+void inorder(int a[], int i)
+{
+    if(i >= 100 || a[i] == -1)  // Base case: If the node is out of bounds or empty
+        return;
+
+    inorder(a, 2 * i);  // Traverse left child
+    printf("%d ", a[i]);  // Visit the root
+    inorder(a, 2 * i + 1);  // Traverse right child
+}
+
+// Pre-order traversal: Root, Left, Right
+void preorder(int a[], int i)
+{
+    if(i >= 100 || a[i] == -1)  // Base case: If the node is out of bounds or empty
+        return;
+
+    printf("%d ", a[i]);  // Visit the root
+    preorder(a, 2 * i);  // Traverse left child
+    preorder(a, 2 * i + 1);  // Traverse right child
+}
+
+// Post-order traversal: Left, Right, Root
+void postorder(int a[], int i)
+{
+    if(i >= 100 || a[i] == -1)  // Base case: If the node is out of bounds or empty
+        return;
+
+    postorder(a, 2 * i);  // Traverse left child
+    postorder(a, 2 * i + 1);  // Traverse right child
+    printf("%d ", a[i]);  // Visit the root
+}
+
+int main()
+{
+    int i;
+    int a[100], item;
+    for(i = 0; i < 100; i++)
+        a[i] = -1;  // Initialize the array with -1 (indicating empty nodes)
+
+    // Take the root node input
+    printf("\nEnter the root node: ");
+    scanf("%d", &item);
+
+    // Build the tree starting from index 1 (root node)
+    build(a, 1, item);
+
+    // Print the In-order traversal
+    printf("\nIn-order Traversal: \n");
+    inorder(a, 1);  // Start traversal from the root at index 1
+    printf("\n");
+
+    // Print the Pre-order traversal
+    printf("\nPre-order Traversal: \n");
+    preorder(a, 1);  // Start traversal from the root at index 1
+    printf("\n");
+
+    // Print the Post-order traversal
+    printf("\nPost-order Traversal: \n");
+    postorder(a, 1);  // Start traversal from the root at index 1
+    printf("\n");
+
+    return 0;
+}
