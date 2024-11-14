@@ -1,0 +1,183 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+struct node {
+    int data;
+    struct node *link;
+};
+
+struct node *head = NULL;
+
+void Display() {
+    struct node *ptr;
+    if (head == NULL) {
+        printf("Linked List is Empty !!!\n");
+    } else {
+        ptr = head;
+        printf("Linked list elements are: ");
+        while (ptr != NULL) {
+            printf("%d\t", ptr->data);
+            ptr = ptr->link;
+        }
+        printf("\n");
+    }
+}
+
+void Insert_Front(int x) {
+    struct node *new;
+    new = (struct node *)malloc(sizeof(struct node));
+    new->data = x;
+    new->link = head;
+    head = new;
+    Display();
+}
+
+void Insert_End(int x) {
+    struct node *new, *ptr;
+    new = (struct node *)malloc(sizeof(struct node));
+    new->data = x;
+    new->link = NULL;
+    if (head == NULL) {
+        head = new;
+    } else {
+        ptr = head;
+        while (ptr->link != NULL) {
+            ptr = ptr->link;
+        }
+        ptr->link = new;
+    }
+    Display();
+}
+
+void Insert_Any(int key, int x) {
+    struct node *new, *ptr;
+    if (head == NULL) {
+        printf("Search Key not found, can't Insert !!!\n");
+    } else {
+        ptr = head;
+        while (ptr->data != key && ptr->link != NULL) {
+            ptr = ptr->link;
+        }
+        if (ptr->data != key) {
+            printf("Search data not found, can't Insert !!!\n");
+        } else {
+            new = (struct node *)malloc(sizeof(struct node));
+            new->data = x;
+            new->link = ptr->link;
+            ptr->link = new;
+        }
+    }
+    Display();
+}
+
+void Delete_Front() {
+    struct node *temp;
+    if (head == NULL) {
+        printf("List is Empty !!!\n");
+    } else {
+        temp = head;
+        head = head->link;
+        free(temp);
+    }
+    Display();
+}
+
+void Delete_End() {
+    struct node *prev, *curr, *temp;
+    if (head == NULL) {
+        printf("List is Empty !!!\n");
+    } else if (head->link == NULL) {
+        temp = head;
+        head = NULL;
+        free(temp);
+    } else {
+        prev = head;
+        curr = head->link;
+        while (curr->link != NULL) {
+            prev = curr;
+            curr = curr->link;
+        }
+        prev->link = NULL;
+        free(curr);
+    }
+    Display();
+}
+
+void Delete_Any(int key) {
+    struct node *prev, *curr, *temp;
+    if (head == NULL) {
+        printf("List is Empty !!!\n");
+    } else if (head->data == key) {
+        temp = head;
+        head = head->link;
+        free(temp);
+    } else {
+        prev = head;
+        curr = head;
+        while (curr != NULL && curr->data != key) {
+            prev = curr;
+            curr = curr->link;
+        }
+        if (curr == NULL) {
+            printf("Search data not found, can't Delete !!!\n");
+        } else {
+            prev->link = curr->link;
+            free(curr);
+        }
+    }
+    Display();
+}
+
+int main() {
+    int x, opt, key;
+    while (1) {
+        printf("Enter the option:\n");
+        printf("1. Insert at Front\n2. Insert at End\n3. Insert at a specific position\n4. Delete at front\n5. Delete at End\n6. Delete at specific position\n7. Display\n");
+        scanf("%d", &opt);
+        
+        switch (opt) {
+            case 1:
+                printf("Enter the data: ");
+                scanf("%d", &x);
+                Insert_Front(x);
+                break;
+                
+            case 2:
+                printf("Enter the data: ");
+                scanf("%d", &x);
+                Insert_End(x);
+                break;
+                
+            case 3:
+                printf("Enter the key: ");
+                scanf("%d", &key);
+                printf("Enter the data: ");
+                scanf("%d", &x);
+                Insert_Any(key, x);
+                break;
+                
+            case 4:
+                Delete_Front();
+                break;
+                
+            case 5:
+                Delete_End();
+                break;
+                
+            case 6:
+                printf("Enter the key: ");
+                scanf("%d", &key);
+                Delete_Any(key);
+                break;
+                
+            case 7:
+                Display();
+                break;
+                
+            default:
+                printf("Invalid option. Try again.\n");
+                break;
+        }
+    }
+    return 0;
+}
