@@ -1,0 +1,181 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+// Define the structure of a node in the linked list
+struct node {
+    int coeff;  // Coefficient of the term
+    int expo;   // Exponent of the term
+    struct node *link;  // Pointer to the next node
+};
+
+// Function to read a polynomial
+struct node* ReadPoly() {
+    struct node *new, *ptr, *head = NULL;
+    int terms, i;
+
+    printf("Enter number of terms in the polynomial: ");
+    scanf("%d", &terms);
+    printf("Enter the coefficient and exponent of each term:\n");
+
+    for(i = 1; i <= terms; i++) {
+        new = (struct node*)malloc(sizeof(struct node));
+        printf("Enter (coeff%d, expo%d): ", i, i);
+        scanf("%d %d", &new->coeff, &new->expo);
+        new->link = NULL;
+
+        if (head == NULL) {
+            head = new;
+            ptr = head;
+        } else {
+            ptr->link = new;
+            ptr = new;
+        }
+    }
+
+    return head;
+}
+
+// Function to display the polynomial
+void DisplayPoly(struct node *head) {
+    struct node *ptr=head;
+    
+    if (head == NULL) {
+        printf("Polynomial is Empty\n");
+        return;
+    }
+
+    while (ptr != NULL) {
+        printf("%dx^%d", ptr->coeff, ptr->expo);
+        if (ptr->link != NULL) {
+            printf(" + ");
+        }
+        ptr = ptr->link;
+    }
+    printf("\n");
+}
+
+// Function to add two polynomials
+struct node* AddPoly(struct node *P, struct node *Q) {
+    struct node *new, *R = NULL, *ptr = NULL;
+    
+    while (P != NULL && Q != NULL) {
+        if (P->expo == Q->expo) {
+            // If exponents are equal, add the coefficients
+            new = (struct node*)malloc(sizeof(struct node));
+            new->coeff = P->coeff + Q->coeff;
+            new->expo = P->expo;
+            new->link = NULL;
+
+            if (R == NULL) {
+                R = new;
+                ptr = R;
+            } else {
+                ptr->link = new;
+                ptr = new;
+            }
+
+            P = P->link;
+            Q = Q->link;
+        } else if (P->expo > Q->expo) {
+            // If exponent of P is greater, add P's term to the result
+            new = (struct node*)malloc(sizeof(struct node));
+            new->coeff = P->coeff;
+            new->expo = P->expo;
+            new->link = NULL;
+
+            if (R == NULL) {
+                R = new;
+                ptr = R;
+            } else {
+                ptr->link = new;
+                ptr = new;
+            }
+
+            P = P->link;
+        } else {
+            // If exponent of Q is greater, add Q's term to the result
+            new = (struct node*)malloc(sizeof(struct node));
+            new->coeff = Q->coeff;
+            new->expo = Q->expo;
+            new->link = NULL;
+
+            if (R == NULL) {
+                R = new;
+                ptr = R;
+            } else {
+                ptr->link = new;
+                ptr = new;
+            }
+
+            Q = Q->link;
+        }
+    }
+
+    // Add remaining terms from P (if any)
+    while (P != NULL) {
+        new = (struct node*)malloc(sizeof(struct node));
+        new->coeff = P->coeff;
+        new->expo = P->expo;
+        new->link = NULL;
+
+        if (R == NULL) {
+            R = new;
+            ptr = R;
+        } else {
+            ptr->link = new;
+            ptr = new;
+        }
+
+        P = P->link;
+    }
+
+    // Add remaining terms from Q (if any)
+    while (Q != NULL) {
+        new = (struct node*)malloc(sizeof(struct node));
+        new->coeff = Q->coeff;
+        new->expo = Q->expo;
+        new->link = NULL;
+
+        if (R == NULL) {
+            R = new;
+            ptr = R;
+        } else {
+            ptr->link = new;
+            ptr = new;
+        }
+
+        Q = Q->link;
+    }
+
+    return R;
+}
+
+// Main function
+int main() {
+    struct node *Phead = NULL, *Qhead = NULL, *Rhead = NULL;
+
+    // Read first polynomial
+    printf("\nEnter the details of First polynomial:\n");
+    Phead = ReadPoly();
+
+    // Read second polynomial
+    printf("\nEnter the details of Second polynomial:\n");
+    Qhead = ReadPoly();
+
+    // Display first polynomial
+    printf("\nFirst Polynomial: ");
+    DisplayPoly(Phead);
+
+    // Display second polynomial
+    printf("\nSecond Polynomial: ");
+    DisplayPoly(Qhead);
+
+    // Add the polynomials
+    Rhead = AddPoly(Phead, Qhead);
+
+    // Display the result
+    printf("\nResultant Polynomial: ");
+    DisplayPoly(Rhead);
+
+    return 0;
+}
